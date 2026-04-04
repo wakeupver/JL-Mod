@@ -1,7 +1,3 @@
-//
-// Created by woesss on 01.08.2023.
-//
-
 #ifndef MMAPI_TSF_PLAYER_H
 #define MMAPI_TSF_PLAYER_H
 
@@ -12,36 +8,39 @@
 #include "util/jbytearray.h"
 
 namespace mmapi {
-    namespace tiny {
-        class Player : public BasePlayer {
-            static tsf *soundBank;
+namespace tiny {
 
-            tsf *synth;
-            tml_message *media;
-            tml_message *currentMsg;
+class Player : public BasePlayer {
+    static tsf *soundBank;
 
-        public:
-            Player(tsf *synth, tml_message *midi, const int64_t duration);
-            ~Player() override;
+    tsf         *synth;
+    tml_message *media;
+    tml_message *currentMsg;
+    int32_t      cachedSampleRate = 0;
 
-            void deallocate() override;
-            void close() override;
-            oboe::Result prefetch() override;
-            int32_t setDataSource(util::JByteArrayPtr *data);
+public:
+    Player(tsf *synth, tml_message *midi, int64_t duration);
+    ~Player() override;
 
-            oboe::DataCallbackResult
-            onAudioReady(oboe::AudioStream *audioStream, void *audioData, int32_t numFrames) override;
+    void         deallocate() override;
+    void         close()      override;
+    oboe::Result prefetch()   override;
+    int32_t      setDataSource(util::JByteArrayPtr *data);
 
-            static int32_t initSoundBank(const char *sound_bank);
-            static int32_t createPlayer(const char *locator, Player **pPlayer);
+    oboe::DataCallbackResult
+    onAudioReady(oboe::AudioStream *audioStream, void *audioData, int32_t numFrames) override;
 
-        protected:
-            oboe::Result createAudioStream() override;
+    static int32_t initSoundBank(const char *sound_bank);
+    static int32_t createPlayer(const char *locator, Player **pPlayer);
 
-        private:
-            void processEvents(bool playMode);
-        }; // class Player
-    } // namespace tiny
+protected:
+    oboe::Result createAudioStream() override;
+
+private:
+    void processEvents(bool playMode);
+};
+
+} // namespace tiny
 } // namespace mmapi
 
-#endif //MMAPI_TSF_PLAYER_H
+#endif
