@@ -67,7 +67,9 @@ android {
     productFlavors {
         create("emulator") { // variant dimension for create emulator
             buildConfigField("boolean", "FULL_EMULATOR", "true")
-            signingConfig = signingConfigs.getByName("emulator")
+            if (secret.isNotEmpty()) {
+                signingConfig = signingConfigs.getByName("emulator")
+            }
             versionNameSuffix = System.getenv("VERSION_SUFFIX")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
