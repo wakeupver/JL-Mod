@@ -39,7 +39,7 @@ android {
         buildConfig = true
     }
 
-    signingConfigs.create("emulator") {
+    signingConfigs.create("KEYSTORE") {
         if (secret.isNotEmpty()) {
             keyAlias = secret.getProperty("keyAlias")
             keyPassword = secret.getProperty("keyPassword")
