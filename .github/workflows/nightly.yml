@@ -1,9 +1,6 @@
 name: Android development CI
 
 on:
-  push:
-    branches:
-    - dev
 
 jobs:
   build:
